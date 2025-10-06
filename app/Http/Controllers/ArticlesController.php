@@ -32,8 +32,6 @@ class ArticlesController extends Controller
      */
     public function store(Request $request)
     {
-
-
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'content' => 'required|string',
@@ -52,7 +50,10 @@ class ArticlesController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $article = Articles::findOrFail($id);
+        return Inertia::render('Articles/Show', [
+            'article' => $article,
+        ]);
     }
 
     /**
@@ -88,6 +89,8 @@ class ArticlesController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $article = Articles::findOrFail($id);
+        $article->delete();
+        return to_route('articles.index')->with('success', "Article {$article->title} deleted successfully.");
     }
 }
