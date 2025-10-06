@@ -35,13 +35,14 @@ class RoleController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request->all());
         $request->validate([
             'name' => 'required',
             'permissions' => 'required',
         ]);
         $role = Role::create(['name' => $request->name]);
         $role->syncPermissions($request->permissions);
-        return to_route('roles.index')->with('success', 'Role created successfully.');
+        return to_route('roles.index');
     }
 
     /**
@@ -49,7 +50,11 @@ class RoleController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $role = Role::with('permissions')->findOrFail($id);
+        return Inertia::render('Roles/Show', [
+            'role' => $role,
+            'permissions' => $role->permissions->pluck('name'),
+        ]);
     }
 
     /**
@@ -68,7 +73,19 @@ class RoleController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id) {}
+    public function update(Request $request, string $id)
+    {
+        // dd($request->all());
+        $request->validate([
+            'name' => 'required',
+            'permissions' => 'required',
+        ]);
+        $role = Role::find($id);
+        $role->name = $request->name;
+        $role->save();
+        $role->syncPermissions($request->permissions);
+        return to_route('roles.index');
+    }
 
     /**
      * Remove the specified resource from storage.

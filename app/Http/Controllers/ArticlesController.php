@@ -24,7 +24,7 @@ class ArticlesController extends Controller
      */
     public function create()
     {
-        //
+        return Inertia::render('Articles/Create');
     }
 
     /**
@@ -32,7 +32,19 @@ class ArticlesController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'content' => 'required|string',
+        ]);
+
+        $article = Articles::create([
+            'title' => $validated['title'],
+            'content' => $validated['content'],
+        ]);
+
+        return redirect()->route('articles.index')->with('success', "Article {$article->title} created successfully!");
     }
 
     /**
@@ -48,7 +60,10 @@ class ArticlesController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $article = Articles::findOrFail($id);
+        return Inertia::render('Articles/Edit', [
+            'article' => $article,
+        ]);
     }
 
     /**
@@ -56,7 +71,16 @@ class ArticlesController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'content' => 'required|string',
+        ]);
+
+        $article = Articles::findOrFail($id);
+        $article->title = $request->title;
+        $article->content = $request->content;
+        $article->save();
+        return to_route('articles.index')->with('success', "Article {$article->title} updated successfully!");
     }
 
     /**

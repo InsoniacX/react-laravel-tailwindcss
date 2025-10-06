@@ -54,7 +54,7 @@ export default function Create({ permissions }) {
                                     type="text"
                                     id="name"
                                     value={data.name}
-                                    onChange={(e) => handleCheckboxChange('name', e.target.value)}
+                                    onChange={(e) => setData('name', e.target.value)}
                                     name="name"
                                     placeholder="Enter Name"
                                 />

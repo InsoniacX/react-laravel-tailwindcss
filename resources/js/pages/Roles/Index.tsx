@@ -23,7 +23,7 @@ export default function Index({ roles }) {
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Admin | Role List" />
             <div>
-                <div className="mx-auto max-w-5xl rounded-lg bg-[0a0a0a] px-6 py-4 shadow-md">
+                <div className="mx-auto max-w-7xl rounded-lg bg-[0a0a0a] px-6 py-4 shadow-md">
                     <div className="mb-4 flex items-center justify-between">
                         <h2 className="text-xl font-bold">Role List</h2>
                         <Link href={route('roles.create')} className="rounded bg-blue-700 px-4 py-2 text-white hover:bg-blue-800">
